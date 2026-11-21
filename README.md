@@ -49,13 +49,39 @@ Source is modular under `game/src/`: world, traffic, police, missions,
 combat, crew, races, vehicles, pedestrians, audio, hud, save, weather,
 player, input, render, main.
 
+## Controls
+
+- **WASD / arrows** — walk, or drive (W/S throttle and reverse, A/D steer)
+- **Mouse** — orbit the camera (click the game to pointer-lock); **Shift** — sprint / handbrake
+- **E** — enter or leave a car, talk to a mission giver, respray at a garage
+- **F or left mouse** — punch, or fire the pistol while it has ammo
+- **Z** — call Rook, your backup driver ($120) · **X** — call Sable, your gunner ($200)
+- **Enter / Space** — advance dialogue · **P or Esc** — pause · **M** — mute
+
 ## Run it
 
+Serve `game/` with any static file server and open `index.html`, e.g.:
+
 ```sh
-node serve.ts   # static server, then open http://localhost:8080
+python3 -m http.server 8080 --directory game
+# then open http://localhost:8080
 ```
 
-Or serve `game/` with any static file server and open `index.html`.
+## As built — verification notes
+
+- `game/index.html?test=1` runs an automated self-test in the page (boot and
+  world spawn, mission 1 end-to-end with payout, car theft raising the
+  wanted level, police dispatch, star decay while hidden, BUSTED, WASTED,
+  and a save that persists across a reload) and writes PASS/FAIL lines into
+  the page; the current build passes all of them with zero console errors.
+- `?shot=cover|drive|chase|night&seed=1` stages the four deterministic
+  scenes captured in `screenshots/`.
+- VBPD units searching for a lost suspect sweep around the last place the
+  suspect was actually seen — never the live position — and brake to park
+  on top of a cornered suspect on foot, which is what fills the bust meter.
+- `main.ts` verifies its own package after copying: it counts the game
+  files and bytes, requires exactly 4 screenshots, and prints a one-line
+  summary alongside the dossier.
 
 ## Entry
 
